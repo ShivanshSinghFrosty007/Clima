@@ -9,7 +9,6 @@ class CityScreen extends StatefulWidget {
 }
 
 class _CityScreenState extends State<CityScreen> {
-
   var cityName;
 
   @override
@@ -28,11 +27,11 @@ class _CityScreenState extends State<CityScreen> {
             children: <Widget>[
               Align(
                 alignment: Alignment.topLeft,
-                child: FlatButton(
+                child: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Icon(
+                  icon: Icon(
                     Icons.arrow_back_ios,
                     size: 50.0,
                   ),
@@ -45,12 +44,12 @@ class _CityScreenState extends State<CityScreen> {
                     color: Colors.black,
                   ),
                   decoration: kTextFeild,
-                  onChanged: (value){
-                   cityName = value;
+                  onChanged: (value) {
+                    cityName = value;
                   },
                 ),
               ),
-              FlatButton(
+              ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context, cityName);
                 },

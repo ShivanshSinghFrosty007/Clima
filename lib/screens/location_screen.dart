@@ -19,6 +19,8 @@ class _LocationScreenState extends State<LocationScreen> {
   var weatherIcon;
   var cityName;
   var weatherMessage;
+  var windSpeed;
+  var humidity;
 
   @override
   void initState() {
@@ -34,6 +36,8 @@ class _LocationScreenState extends State<LocationScreen> {
       weatherIcon = weatherModel.getWeatherIcon(condition);
       weatherMessage = weatherModel.getMessage(temp.toInt());
       cityName = wearherData['name'];
+      windSpeed = wearherData['wind']["speed"].toString();
+      humidity = wearherData['main']['humidity'].toString();
     });
   }
 
@@ -58,7 +62,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  FlatButton(
+                  ElevatedButton(
                     onPressed: () async {
                       var weatherData = await weatherModel.getLocationWeather();
                       UpdateUI(weatherData);
@@ -68,7 +72,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       size: 50.0,
                     ),
                   ),
-                  FlatButton(
+                  ElevatedButton(
                     onPressed: () async {
                       var typedName = await Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
@@ -76,6 +80,9 @@ class _LocationScreenState extends State<LocationScreen> {
                       }));
                       if(typedName != null){
                         var weatherData =  await weatherModel.getCityWeather(typedName);
+                        if(weatherData["cod"] == "404"){
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Area not found")));
+                        }
                         UpdateUI(weatherData);
                       }
                     },
@@ -100,6 +107,15 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ],
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  Text("Wind speed " + windSpeed + "m/s", style: kWindTextStyle,),
+                  Text("Humidity " + humidity + "g/kg", style: kWindTextStyle,),
+                ],),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
